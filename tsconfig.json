@@ -12,5 +12,5 @@
     "resolveJsonModule": true
   },
   "include": ["src", "test"],
-  "files": ["jest.config.ts"]
+  "files": ["jest.config.ts", "global.d.ts"]
 }

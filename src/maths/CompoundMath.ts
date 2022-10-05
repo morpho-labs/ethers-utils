@@ -6,6 +6,7 @@ import { minBNS } from "../utils";
 const WAD = parseUnits("1");
 
 const CompoundMath = {
+    WAD,
     mul: (x: BigNumberish, y: BigNumberish) => {
         x = BigNumber.from(x);
         return x.mul(y).div(WAD);
@@ -14,7 +15,7 @@ const CompoundMath = {
     min: (a: BigNumberish, b: BigNumberish, c: BigNumberish) => minBNS(a, b, c),
     safeSub: (a: BigNumberish, b: BigNumberish) => {
         a = BigNumber.from(a);
-        return a.lte(b) ? a.sub(b) : constants.Zero;
+        return a.gte(b) ? a.sub(b) : constants.Zero;
     },
     average: (a: BigNumberish, b: BigNumberish) => {
         a = BigNumber.from(a);

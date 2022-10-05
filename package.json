@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "⚡🚀 Use ethers-js easily",
   "main": "lib/src/index.js",
+  "types": "global.d.ts",
   "files": [
     "lib/**/*"
   ],

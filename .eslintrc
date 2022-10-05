@@ -3,11 +3,12 @@
   "parserOptions": {
     "project": ["./tsconfig.json"]
   },
-  "plugins": ["@typescript-eslint", "node"],
+  "plugins": ["@typescript-eslint", "node", "prettier"],
   "extends": ["plugin:node/recommended", "plugin:@typescript-eslint/eslint-recommended"],
   "rules": {
     "node/no-missing-import": "off",
     "node/no-unsupported-features/es-syntax": "off",
+    "no-console": "error",
     "node/shebang": "off"
   }
 }

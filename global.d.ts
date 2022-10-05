@@ -1,4 +1,4 @@
-import {BigNumberish} from "ethers";
+import { BigNumberish } from "ethers";
 
 interface CustomMatchers<R = unknown> {
     toBnEquals(b2: BigNumberish): R;

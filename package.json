@@ -2,8 +2,7 @@
   "name": "@morpho-labs/ethers-utils",
   "version": "1.0.0",
   "description": "⚡🚀 Use ethers-js easily",
-  "main": "lib/src/index.js",
-  "types": "global.d.ts",
+  "main": "lib/index.js",
   "files": [
     "lib/**/*"
   ],
@@ -124,5 +123,25 @@
       "@semantic-release/npm",
       "@semantic-release/github"
     ]
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/test/**/*.spec.ts"
+    ],
+    "setupFilesAfterEnv": [
+      "./test/setup/jest.matchers.ts"
+    ],
+    "collectCoverageFrom": [
+      "<rootDir>/src/**/*.ts",
+      "!<rootDir>/src/types/**/*.ts"
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false,
+        "isolatedModules": true
+      }
+    }
   }
 }

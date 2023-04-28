@@ -207,5 +207,115 @@ describe("Test ethers-utils formatters", () => {
                 ).toEqual("$+123,456.789000");
             });
         });
+
+        describe("should format a BigNumber in a `short` format", () => {
+            it("without options", () => {
+                expect(formatBN(bn, decimals, { format: Format.short })).toEqual(
+                    "123.456789000000000000000k"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short })).toEqual(
+                    "-123.456789000000000000000k"
+                );
+            });
+
+            it("with digits", () => {
+                expect(formatBN(bn, decimals, { format: Format.short, digits: 2 })).toEqual(
+                    "123.45k"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short, digits: 2 })).toEqual(
+                    "-123.45k"
+                );
+                expect(formatBN(bn, decimals, { format: Format.short, digits: 6 })).toEqual(
+                    "123.456789k"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short, digits: 6 })).toEqual(
+                    "-123.456789k"
+                );
+            });
+
+            it("without trailing zeros", () => {
+                // without trailing zeros
+                expect(
+                    formatBN(bn, decimals, { format: Format.short, removeTrailingZero: true })
+                ).toEqual("123.456789k");
+                expect(
+                    formatBN(negBN, decimals, { format: Format.short, removeTrailingZero: true })
+                ).toEqual("-123.456789k");
+            });
+
+            it("with sign", () => {
+                expect(formatBN(bn, decimals, { format: Format.short, sign: true })).toEqual(
+                    "+123.456789000000000000000k"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short, sign: true })).toEqual(
+                    "-123.456789000000000000000k"
+                );
+            });
+
+            it("with unit", () => {
+                expect(formatBN(bn, decimals, { format: Format.short, unit: "$" })).toEqual(
+                    "$123.456789000000000000000k"
+                );
+                expect(formatBN(bn, decimals, { format: Format.short, unit: "%" })).toEqual(
+                    "123.456789000000000000000k%"
+                );
+                expect(formatBN(bn, decimals, { format: Format.short, unit: "UNIT" })).toEqual(
+                    "123.456789000000000000000k UNIT"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short, unit: "$" })).toEqual(
+                    "$-123.456789000000000000000k"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short, unit: "%" })).toEqual(
+                    "-123.456789000000000000000k%"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short, unit: "UNIT" })).toEqual(
+                    "-123.456789000000000000000k UNIT"
+                );
+            });
+
+            it("with a max value", () => {
+                expect(formatBN(bn, decimals, { format: Format.short, max: 1000 })).toEqual(
+                    "> 1000.000000000000000000"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short, max: -200000 })).toEqual(
+                    "> -200.000000000000000000000k"
+                );
+            });
+
+            it("with a min value", () => {
+                expect(formatBN(bn, decimals, { format: Format.short, min: 200000 })).toEqual(
+                    "< 200.000000000000000000000k"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.short, min: 0 })).toEqual(
+                    "< 0.000000000000000000"
+                );
+            });
+
+            it("with small numbers with commas", () => {
+                expect(
+                    formatBN(bn.div(100), decimals, {
+                        format: Format.short,
+                        smallValuesWithComas: true,
+                    })
+                ).toEqual("1,234.567890000000000000");
+                expect(
+                    formatBN(negBN.div(100), decimals, {
+                        format: Format.short,
+                        smallValuesWithComas: true,
+                    })
+                ).toEqual("-1,234.567890000000000000");
+            });
+
+            it("with several options set", () => {
+                expect(
+                    formatBN(bn, decimals, {
+                        format: Format.short,
+                        unit: "$",
+                        sign: true,
+                        digits: 6,
+                    })
+                ).toEqual("$+123.456789k");
+            });
+        });
     });
 });

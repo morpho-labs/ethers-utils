@@ -91,6 +91,7 @@ const RANGES = [
     },
     {
         minDecimals: 4,
+        power: 3,
         symbol: "k",
     },
 ];
@@ -104,7 +105,7 @@ const _formatShort = (
     if (params) {
         return (
             _applyOptions(
-                stringValue.insert(-(params.minDecimals + decimals), ".", "0"),
+                stringValue.insert(-((params.power ?? params.minDecimals) + decimals), ".", "0"),
                 formatOptions
             ) + params.symbol
         );

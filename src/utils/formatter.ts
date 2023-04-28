@@ -187,11 +187,13 @@ export function formatBN(
 ): string {
     if (formatOptions.format === Format.hex) return bn.toHexString();
 
-    const maxBN = formatOptions.max && parseUnits(formatOptions.max.toString(), decimals);
+    const maxBN =
+        formatOptions.max !== undefined && parseUnits(formatOptions.max.toString(), decimals);
     if (maxBN && bn.gt(maxBN)) {
         return `> ${formatBN(maxBN, decimals, formatOptions)}`;
     }
-    const minBN = formatOptions.min && parseUnits(formatOptions.min.toString(), decimals);
+    const minBN =
+        formatOptions.min !== undefined && parseUnits(formatOptions.min.toString(), decimals);
     if (minBN && bn.lt(minBN)) {
         return `< ${formatBN(minBN, decimals, formatOptions)}`;
     }
@@ -228,7 +230,7 @@ export function formatBN(
  * returns a string representation of a number, always in a decimal format (avoid the 1.34e-15 format for small numbers)
  * @param number
  */
-const safeNumberToString = (number: number) => {
+export const safeNumberToString = (number: number) => {
     const str = number.toString();
 
     if (!/[eE]/.test(str)) return str;

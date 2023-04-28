@@ -41,6 +41,16 @@ const WadRayMath = {
     parseRay: (a: string) => parseUnits(a, 27),
     parseWad: (a: string) => parseUnits(a),
     formatWad: (a: string) => formatUnits(a),
+    wadDivUp: (a: BigNumberish, b: BigNumberish) => {
+        a = BigNumber.from(a);
+        b = BigNumber.from(b);
+        return a.mul(WAD).add(b.sub(1)).div(b);
+    },
+    rayDivUp: (a: BigNumberish, b: BigNumberish) => {
+        a = BigNumber.from(a);
+        b = BigNumber.from(b);
+        return a.mul(RAY).add(b.sub(1)).div(b);
+    },
 };
 
 export default WadRayMath;

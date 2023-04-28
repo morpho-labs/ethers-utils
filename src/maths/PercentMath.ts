@@ -1,4 +1,5 @@
 import { BigNumber, BigNumberish, constants } from "ethers";
+import { parseUnits } from "ethers/lib/utils";
 
 import { pow10 } from "../utils";
 
@@ -23,11 +24,21 @@ const percentDiv = (x: BigNumberish, pct: BigNumberish) => {
 const weiToPercent = (weiNumber: BigNumberish) =>
     BigNumber.from(weiNumber).mul(BASE_PERCENT).div(pow10(14)).add(HALF_PERCENT).div(BASE_PERCENT);
 
+const percentDivUp = (x: BigNumberish, pct: BigNumberish) => {
+    x = BigNumber.from(x);
+    pct = BigNumber.from(pct);
+    return x.mul(BASE_PERCENT).add(pct.sub(1)).div(pct);
+};
+
+const parsePercent = (a: string, pow100: boolean = false) => parseUnits(a, pow100 ? 2 : 4);
+
 const PercentMath = {
     BASE_PERCENT,
     HALF_PERCENT,
     percentMul,
     percentDiv,
     weiToPercent,
+    percentDivUp,
+    parsePercent,
 };
 export default PercentMath;

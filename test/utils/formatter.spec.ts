@@ -317,5 +317,16 @@ describe("Test ethers-utils formatters", () => {
                 ).toEqual("$+123.456789k");
             });
         });
+
+        describe("should format a BigNumber in a `percent` format", () => {
+            const percentBN = parseUnits("0.2430", 4);
+            expect(formatBN(percentBN, 4, { format: Format.percent })).toEqual("24.3000");
+            expect(formatBN(percentBN.mul(-1), 4, { format: Format.percent })).toEqual("-24.3000");
+        });
+
+        describe("should format a BigNumber in a `hex` format", () => {
+            expect(formatBN(bn, decimals, { format: Format.hex })).toEqual(bn.toHexString());
+            expect(formatBN(negBN, decimals, { format: Format.hex })).toEqual(negBN.toHexString());
+        });
     });
 });

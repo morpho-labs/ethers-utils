@@ -120,10 +120,9 @@ const _formatComas = (
     decimals: number,
     formatOptions: Omit<FormatComasOptions, "format">
 ) => {
-    const stringValue = bn.toString();
+    const stringValue = decimals ? bn.toString().insert(-decimals, ".", "0") : bn.toString();
 
-    const wholePart = stringValue.slice(0, -decimals);
-    const decimalPart = stringValue.slice(-decimals);
+    const [wholePart, decimalPart] = stringValue.split(".");
 
     return _applyOptions(
         wholePart
@@ -132,9 +131,7 @@ const _formatComas = (
                 (formattedNumber, digit, i, arr) =>
                     `${formattedNumber}${!i || (arr.length - i) % 3 ? "" : ","}${digit}`,
                 ""
-            ) +
-            "." +
-            decimalPart,
+            ) + (decimalPart ? "." + decimalPart : ""),
         formatOptions
     );
 };

@@ -1,3 +1,4 @@
+import { BigNumber } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 
 import { safeNumberToString, formatBN, Format } from "../../src/utils/formatter";
@@ -16,6 +17,7 @@ describe("Test ethers-utils formatters", () => {
         const decimals = 18;
         const bn = parseUnits("123456.7890", decimals);
         const negBN = parseUnits("-123456.7890", decimals);
+
         describe("should format a BigNumber in a `number` format", () => {
             it("without options", () => {
                 expect(formatBN(bn, decimals, { format: Format.number })).toEqual(
@@ -108,6 +110,101 @@ describe("Test ethers-utils formatters", () => {
                         digits: 6,
                     })
                 ).toEqual("$+123456.789000");
+            });
+        });
+
+        describe("should format a BigNumber in a `commas` format", () => {
+            it("without options", () => {
+                expect(formatBN(bn, decimals, { format: Format.commas })).toEqual(
+                    "123,456.789000000000000000"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas })).toEqual(
+                    "-123,456.789000000000000000"
+                );
+            });
+
+            it("with digits", () => {
+                expect(formatBN(bn, decimals, { format: Format.commas, digits: 2 })).toEqual(
+                    "123,456.78"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas, digits: 2 })).toEqual(
+                    "-123,456.78"
+                );
+                expect(formatBN(bn, decimals, { format: Format.commas, digits: 6 })).toEqual(
+                    "123,456.789000"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas, digits: 6 })).toEqual(
+                    "-123,456.789000"
+                );
+            });
+
+            it("without trailing zeros", () => {
+                // without trailing zeros
+                expect(
+                    formatBN(bn, decimals, { format: Format.commas, removeTrailingZero: true })
+                ).toEqual("123,456.789");
+                expect(
+                    formatBN(negBN, decimals, { format: Format.commas, removeTrailingZero: true })
+                ).toEqual("-123,456.789");
+            });
+
+            it("with sign", () => {
+                expect(formatBN(bn, decimals, { format: Format.commas, sign: true })).toEqual(
+                    "+123,456.789000000000000000"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas, sign: true })).toEqual(
+                    "-123,456.789000000000000000"
+                );
+            });
+
+            it("with unit", () => {
+                expect(formatBN(bn, decimals, { format: Format.commas, unit: "$" })).toEqual(
+                    "$123,456.789000000000000000"
+                );
+                expect(formatBN(bn, decimals, { format: Format.commas, unit: "%" })).toEqual(
+                    "123,456.789000000000000000%"
+                );
+                expect(formatBN(bn, decimals, { format: Format.commas, unit: "UNIT" })).toEqual(
+                    "123,456.789000000000000000 UNIT"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas, unit: "$" })).toEqual(
+                    "$-123,456.789000000000000000"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas, unit: "%" })).toEqual(
+                    "-123,456.789000000000000000%"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas, unit: "UNIT" })).toEqual(
+                    "-123,456.789000000000000000 UNIT"
+                );
+            });
+
+            it("with a max value", () => {
+                expect(formatBN(bn, decimals, { format: Format.commas, max: 1000 })).toEqual(
+                    "> 1,000.000000000000000000"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas, max: -200000 })).toEqual(
+                    "> -200,000.000000000000000000"
+                );
+            });
+
+            it("with a min value", () => {
+                expect(formatBN(bn, decimals, { format: Format.commas, min: 200000 })).toEqual(
+                    "< 200,000.000000000000000000"
+                );
+                expect(formatBN(negBN, decimals, { format: Format.commas, min: 0 })).toEqual(
+                    "< 0.000000000000000000"
+                );
+            });
+
+            it("with several options set", () => {
+                expect(
+                    formatBN(bn, decimals, {
+                        format: Format.commas,
+                        unit: "$",
+                        sign: true,
+                        digits: 6,
+                    })
+                ).toEqual("$+123,456.789000");
             });
         });
     });
